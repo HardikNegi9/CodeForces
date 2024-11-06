@@ -16,11 +16,15 @@ int main(){
         for(int i = 0; i < n; i++){
             cin >> b[i];
         }
-        
-        pair<int, int> pr; // 
-        for(int i = 0; i < k; i++){
 
+        int res = 0;
+        int prev = 0;
+        int mx = 0;
+        for(int i = 0; i < min(k, n); i++){
+            mx = max(mx, b[i]);
+            prev += a[i];
+            res = max(res, prev + mx*(k-i-1));
         }
-        
+        cout << res << endl;
     }
 }
