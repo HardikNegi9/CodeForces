@@ -1,0 +1,1 @@
+{"name":"Local: c","url":"d:\\CP\\1100\\c.c","tests":[{"id":1731057181355,"input":"2\n4\n4","output":"98"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\CP\\1100\\c.c","group":"local","local":true}
