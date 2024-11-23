@@ -1,31 +1,25 @@
 #include<iostream>
-#include<set>
 using namespace std;
 
 int main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
+        long long n;
         cin >> n;
         string s;
         cin >> s;
-        set<int> st;
-        int res = 0;
-        for(int i = 0; i < n; i++){
+        string mark(n, '0');
+        long long res = 0;
+        for(long long i = 0; i < n; i++){
             if(s[i] == '0'){
-                st.insert(i + 1);
-            }
-        }
+                for(long long j = i + 1; j <= n; j += i + 1){
+                    if(s[j - 1] == '1') break;
+                    if(mark[j - 1] == '1') continue;
 
-        while(!st.empty()){
-            int x = *st.begin();
-            int ele = x;
-            for(int i = 1; i <= n/x; i++){
-                if(st.count(x * i)){
-                    st.erase(x * i);
-                    res += ele;
-                }else break;
+                    mark[j - 1] = '1';
+                    res += i + 1;
+                }
             }
         }
 
