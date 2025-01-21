@@ -20,7 +20,7 @@ int main() {
         long long n5 = countFactor(n, 5);
         long long n2 = countFactor(n, 2);
         
-        int k = 1;
+        long long k = 1;
         if(n5 > n2){
             for(int i = 1; i <= n5 - n2 && k * 2 <= m ; i++){
                 k *= 2;
