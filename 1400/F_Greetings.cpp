@@ -1,42 +1,39 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <queue>
-#include <set>
+#include<bits/stdc++.h>
+
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
 
 using namespace std;
+using namespace __gnu_pbds;
 
-#define FOR(i,a,b) for(int i=(a);i<(b);++i)
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> pbds; // find_by_order, order_of_key
 
-int main(){
-   int n;
-   cin >> n;
+int main() {
 
-   priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
-   FOR(i,0,n){
-       int x, y;
-       cin >> x >> y;
-       pq.push({x, 0, y});
-       pq.push({y, 1, x});
-   }
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vector<pair<int, int> > v(n);
+    	pbds A; // declaration
 
-   int ans = 0;
-   set<long long> st;
+        for(int i = 0; i < n; i++){
+            cin >> v[i].first >> v[i].second;
+            A.insert(v[i].second);
+        }
+        
+        long long res = 0;
 
-   while(!pq.empty()){
-       int x = pq.top()[0];
-       int y = pq.top()[1];
-       int z = pq.top()[2];
-       pq.pop();
-       
-       if(y == 0){
-           st.insert(x);
-       } else {
-           st.erase(st.find(z));
+        sort(v.begin(), v.end());
 
-           int count = distance(st.begin(), st.lower_bound(z));
-           ans += count;
-       }
-   }
-   cout << ans << '\n';
+        for(int i = 0; i < n; i++){
+            res += A.order_of_key(v[i].second);
+            A.erase(v[i].second);
+        }
+
+        cout << res << endl;
+        
+    }
+
 }
