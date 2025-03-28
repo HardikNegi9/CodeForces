@@ -1,70 +1,57 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include<unordered_map>
-#include<numeric>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-int main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        string s;
-        cin >> s;
-
-        unordered_map<char, int> freq;
-        unordered_map<char, vector<int>> idxs;
-        for(int i = 0; i < n; i++){
-            freq[s[i]]++;
-            idxs[s[i]].push_back(i);
-        }
-
-        string temp = "abcdefghijklmnopqrstuvwxyz";
-
-        sort(temp.begin(), temp.end(), [&](char a, char b){
-            return freq[a] > freq[b];
-        });
-
-        int diff = INT_MAX, pos = 0, cnt_req = 0;
-
-        for(int unique = 1; unique <= 26; unique++){
-            if(n % unique) continue;
-            int cnt_per = n / unique;
-
-            vector<int> changes(26, 0);
-
-            for(int i = 0; i < unique; i++) changes[temp[i]] = abs(cnt_per - freq[temp[i]]);
-            for(int i = unique; i < 26; i++) changes[temp[i]] = cnt_per;
-
-            int curr_diff = accumulate(changes.begin(), changes.end(), 0);
-
-            if(curr_diff < diff){
-                diff = curr_diff;
-                pos = unique;
-                cnt_req = cnt_per;
-            }
-        }
-
-        if(diff == 0){
-            cout << 0 << endl;
-            cout << s << endl;
-            continue;
-        }
-
-        string res = s;
-        int i = 0, j = pos - 1;
-        int k = 25;
-
-        while(k >= pos){
-            if(freq[temp[k]] != 0){
-                int idx = idxs[temp[k]].back();
-                idxs[temp[k]].pop_back();
-                
-            }
-        }
-
-        
+int main() {
+  int tt;
+  cin >> tt;
+  while (tt--) {
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    vector<vector<int>> at(26);
+    for (int i = 0; i < n; i++) {
+      at[s[i] - 'a'].push_back(i);
     }
+    vector<int> order(26);
+    iota(order.begin(), order.end(), 0);
+    sort(order.begin(), order.end(), [&](int i, int j) {
+      return at[i].size() > at[j].size();
+    });
+    string res = "";
+    int best = -1;
+    for (int cnt = 1; cnt <= 26; cnt++) {
+      if (n % cnt == 0) {
+        int cur = 0;
+        for (int i = 0; i < cnt; i++) {
+          cur += min(n / cnt, (int) at[order[i]].size());
+        }
+        if (cur > best) {
+          best = cur;
+          res = string(n, ' ');
+          vector<char> extra;
+          for (int it = 0; it < cnt; it++) {
+            int i = order[it];
+            for (int j = 0; j < n / cnt; j++) {
+              if (j < at[i].size()) {
+                res[at[i][j]] = 'a' + i;
+              } else {
+                extra.push_back('a' + i);
+              }
+            }
+          }
+          for (char& c : res) {
+            if (c == ' ') {
+              c = extra.back();
+              extra.pop_back();
+            }
+          }
+        }
+      }
+    }
+    cout << n - best << '\n';
+    cout << res << '\n';
+  }
+  return 0;
 }
